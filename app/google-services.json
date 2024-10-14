@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "833494219766",
+    "project_id": "map-lab-73861",
+    "storage_bucket": "map-lab-73861.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833494219766:android:4d64ad3f31a5489055e5d7",
+        "android_client_info": {
+          "package_name": "com.example.map_lab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtMQ5VmWKyqH8SjcllPuaOeTfRFwjlxrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
