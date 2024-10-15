@@ -70,35 +70,65 @@ class AddStoryFragment : Fragment() {
 
     private fun uploadStory() {
         val storyText = storyEditText.text.toString()
-        if (storyText.isEmpty() || imageUri == null) {
-            Toast.makeText(context, "Please write a story and select an image", Toast.LENGTH_SHORT).show()
+        if (storyText.isEmpty() && imageUri == null) {
+            Toast.makeText(context, "Please write a story or select an image", Toast.LENGTH_SHORT).show()
             return
         }
 
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val userId = currentUser.uid
-            val storyRef = database.getReference("stories").child(userId).push()
-            val imageRef = storage.reference.child("story_images/${storyRef.key}.jpg")
+            val storyRef = database.getReference("stories").push()  // Push to root, not inside userId
 
-            imageRef.putFile(imageUri!!).addOnSuccessListener {
-                imageRef.downloadUrl.addOnSuccessListener { uri ->
-                    val story = Story(userId, storyText, uri.toString(), System.currentTimeMillis())
-                    storyRef.setValue(story).addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(context, "Story uploaded successfully", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(context, "Failed to upload story", Toast.LENGTH_SHORT).show()
+            if (imageUri != null) {
+                val imageRef = storage.reference.child("story_images/${storyRef.key}.jpg")
+                imageRef.putFile(imageUri!!).addOnSuccessListener {
+                    imageRef.downloadUrl.addOnSuccessListener { uri ->
+                        // Create the Story object with image URL
+                        val story = Story(
+                            storyId = storyRef.key ?: "",
+                            userId = userId,
+                            text = storyText,
+                            imageUrl = uri.toString(),
+                            timestamp = System.currentTimeMillis(),
+                            likesCount = 0, // Default to 0 likes
+                            likes = mutableMapOf() // Empty likes map
+                        )
+                        storyRef.setValue(story).addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(context, "Story uploaded successfully", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(context, "Failed to upload story", Toast.LENGTH_SHORT).show()
+                            }
                         }
+                    }.addOnFailureListener {
+                        Toast.makeText(context, "Failed to get image URL", Toast.LENGTH_SHORT).show()
                     }
                 }.addOnFailureListener {
-                    Toast.makeText(context, "Failed to get image URL", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Failed to upload image", Toast.LENGTH_SHORT).show()
                 }
-            }.addOnFailureListener {
-                Toast.makeText(context, "Failed to upload image", Toast.LENGTH_SHORT).show()
+            } else {
+                // Create the Story object without image URL
+                val story = Story(
+                    storyId = storyRef.key ?: "",
+                    userId = userId,
+                    text = storyText,
+                    imageUrl = "",
+                    timestamp = System.currentTimeMillis(),
+                    likesCount = 0, // Default to 0 likes
+                    likes = mutableMapOf() // Empty likes map
+                )
+                storyRef.setValue(story).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(context, "Story uploaded successfully", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Failed to upload story", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         } else {
             Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
         }
     }
+
 }

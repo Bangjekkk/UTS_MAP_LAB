@@ -43,11 +43,10 @@ class HomePageFragment : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 stories.clear()
                 for (storySnapshot in snapshot.children) {
-                    for (childSnapshot in storySnapshot.children) {
-                        val story = childSnapshot.getValue(Story::class.java)
-                        if (story != null) {
-                            stories.add(story)
-                        }
+                    val story = storySnapshot.getValue(Story::class.java)
+                    if (story != null) {
+                        story.storyId = storySnapshot.key ?: "" // Set the storyId here
+                        stories.add(story)
                     }
                 }
                 stories.sortByDescending { it.timestamp }
@@ -59,4 +58,5 @@ class HomePageFragment : Fragment() {
             }
         })
     }
+
 }
