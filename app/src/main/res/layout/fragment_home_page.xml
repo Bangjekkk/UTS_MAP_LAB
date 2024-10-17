@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    style="@style/CustomLinearLayoutStyle"
     android:padding="16dp">
 
     <LinearLayout
@@ -10,6 +11,14 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
 
+        <!-- ImageView for UMN Logo -->
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/logo_umn" />
+
+        <!-- TextView for UMN Story -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,14 +29,14 @@
             android:textColor="@color/blue"
             android:textSize="28sp" />
 
-
     </LinearLayout>
 
-
+    <!-- RecyclerView for stories -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="530dp"
         android:layout_marginTop="16dp"
         android:scrollbars="none" />
+
 </LinearLayout>

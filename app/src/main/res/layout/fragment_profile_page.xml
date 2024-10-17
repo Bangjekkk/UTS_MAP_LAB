@@ -3,34 +3,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
+    style="@style/CustomLinearLayoutStyle"
     android:padding="16dp">
 
     <ImageView
         android:id="@+id/profile_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
         android:fontFamily="@font/poppins_regular"
-        android:src="@drawable/ic_profile" />
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/logo_umn" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Profile"
+        style="@style/CustomTextStyle"
+        android:textAlignment="center"
+        android:letterSpacing="0.08"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:textSize="26sp" />
 
     <EditText
         android:id="@+id/et_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
-        android:hint="Name" />
+        android:hint="Name"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edit_text_background"
+        style="?attr/editTextStyle"
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/et_nim"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
-        android:hint="NIM" />
+        android:hint="NIM"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edit_text_background"
+        style="?attr/editTextStyle"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/btn_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/poppins_bold"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/blue"
+        style="@style/LoginButtonStyle"
         android:text="Update" />
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/red"
+        style="@style/LoginButtonStyle"
+        android:text="Logout" />
 </LinearLayout>

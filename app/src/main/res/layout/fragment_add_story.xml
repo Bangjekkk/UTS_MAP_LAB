@@ -4,24 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
+    style="@style/CustomLinearLayoutStyle"
     android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Share Your UMN Story"
         android:layout_gravity="center"
-        android:textSize="32sp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/poppins_regular"
-        />
+        android:fontFamily="@font/poppins_bold"
+        android:text="Add your story !!"
+        style="@style/CustomTextStyle"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="26sp" />
 
     <ImageView
         android:id="@+id/story_image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="120dp"
         android:layout_marginTop="16dp"
-        android:background="@android:color/darker_gray"
         android:contentDescription="Story Image"
         android:foregroundTint="#00B42525"
         android:src="@drawable/ic_img"
@@ -36,6 +38,7 @@
         android:layout_marginTop="8dp"
         android:text="Select Image"
         android:fontFamily="@font/poppins_regular"
+        style="@style/BlackButtonStyle"
         app:icon="@drawable/ic_upload" />
 
     <EditText
@@ -52,7 +55,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/poppins_bold"
+        android:backgroundTint="@color/blue"
+        style="@style/LoginButtonStyle"
         android:text="Post" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 </LinearLayout>

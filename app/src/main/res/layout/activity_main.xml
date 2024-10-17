@@ -10,12 +10,17 @@
         android:id="@+id/nav_host_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation" />
+        android:layout_above="@id/bottom_navigation"
+
+        android:backgroundTint="#FFFFFF" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
+        app:itemRippleColor="@color/blue"
         app:menu="@menu/bottom_nav_menu" />
 </RelativeLayout>

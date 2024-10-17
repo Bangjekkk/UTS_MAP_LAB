@@ -1,6 +1,7 @@
 // ProfilePageFragment.kt
 package com.example.map_lab.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.map_lab.LoginActivity
 import com.example.map_lab.R
 import com.example.map_lab.User
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +27,7 @@ class ProfilePageFragment : Fragment() {
     private lateinit var nameEditText: EditText
     private lateinit var nimEditText: EditText
     private lateinit var updateButton: Button
+    private lateinit var logoutButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,11 +50,16 @@ class ProfilePageFragment : Fragment() {
         nameEditText = view.findViewById(R.id.et_name)
         nimEditText = view.findViewById(R.id.et_nim)
         updateButton = view.findViewById(R.id.btn_update)
+        logoutButton = view.findViewById(R.id.btn_logout)
 
         loadUserProfile()
 
         updateButton.setOnClickListener {
             updateUserProfile()
+        }
+
+        logoutButton.setOnClickListener {
+            logoutUser()
         }
 
         return view
@@ -99,5 +107,13 @@ class ProfilePageFragment : Fragment() {
         } else {
             Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun logoutUser() {
+        auth.signOut()
+        Toast.makeText(context, "Logged out successfully", Toast.LENGTH_SHORT).show()
+        val intent = Intent(activity, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 }

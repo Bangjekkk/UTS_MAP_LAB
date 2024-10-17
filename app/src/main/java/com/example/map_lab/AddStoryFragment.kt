@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
@@ -22,6 +23,7 @@ class AddStoryFragment : Fragment() {
     private lateinit var storyImageView: ImageView
     private lateinit var selectImageButton: Button
     private lateinit var submitButton: Button
+    private lateinit var progressBar: ProgressBar
     private var imageUri: Uri? = null
 
     private lateinit var auth: FirebaseAuth
@@ -38,6 +40,7 @@ class AddStoryFragment : Fragment() {
         storyImageView = view.findViewById(R.id.story_image)
         selectImageButton = view.findViewById(R.id.select_image_button)
         submitButton = view.findViewById(R.id.submit_button)
+        progressBar = view.findViewById(R.id.progress_bar)
 
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
@@ -75,26 +78,28 @@ class AddStoryFragment : Fragment() {
             return
         }
 
+        progressBar.visibility = View.VISIBLE
+
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val userId = currentUser.uid
-            val storyRef = database.getReference("stories").push()  // Push to root, not inside userId
+            val storyRef = database.getReference("stories").push()
 
             if (imageUri != null) {
                 val imageRef = storage.reference.child("story_images/${storyRef.key}.jpg")
                 imageRef.putFile(imageUri!!).addOnSuccessListener {
                     imageRef.downloadUrl.addOnSuccessListener { uri ->
-                        // Create the Story object with image URL
                         val story = Story(
                             storyId = storyRef.key ?: "",
                             userId = userId,
                             text = storyText,
                             imageUrl = uri.toString(),
                             timestamp = System.currentTimeMillis(),
-                            likesCount = 0, // Default to 0 likes
-                            likes = mutableMapOf() // Empty likes map
+                            likesCount = 0,
+                            likes = mutableMapOf()
                         )
                         storyRef.setValue(story).addOnCompleteListener { task ->
+                            progressBar.visibility = View.GONE
                             if (task.isSuccessful) {
                                 Toast.makeText(context, "Story uploaded successfully", Toast.LENGTH_SHORT).show()
                             } else {
@@ -102,23 +107,25 @@ class AddStoryFragment : Fragment() {
                             }
                         }
                     }.addOnFailureListener {
+                        progressBar.visibility = View.GONE
                         Toast.makeText(context, "Failed to get image URL", Toast.LENGTH_SHORT).show()
                     }
                 }.addOnFailureListener {
+                    progressBar.visibility = View.GONE
                     Toast.makeText(context, "Failed to upload image", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                // Create the Story object without image URL
                 val story = Story(
                     storyId = storyRef.key ?: "",
                     userId = userId,
                     text = storyText,
                     imageUrl = "",
                     timestamp = System.currentTimeMillis(),
-                    likesCount = 0, // Default to 0 likes
-                    likes = mutableMapOf() // Empty likes map
+                    likesCount = 0,
+                    likes = mutableMapOf()
                 )
                 storyRef.setValue(story).addOnCompleteListener { task ->
+                    progressBar.visibility = View.GONE
                     if (task.isSuccessful) {
                         Toast.makeText(context, "Story uploaded successfully", Toast.LENGTH_SHORT).show()
                     } else {
@@ -127,8 +134,8 @@ class AddStoryFragment : Fragment() {
                 }
             }
         } else {
+            progressBar.visibility = View.GONE
             Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
         }
     }
-
 }
